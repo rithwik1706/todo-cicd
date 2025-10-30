@@ -10,14 +10,14 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                // Kill any existing Node process (optional)
+                // Kill existing Node processes (ignore if none)
                 bat 'taskkill /F /IM node.exe || exit 0'
 
-                // Start app in background
+                // Start the Node.js app in the background
                 bat 'cd "%WORKSPACE%" && start /B node main.js'
 
-                // Wait few seconds to ensure it starts
-                bat 'timeout /t 3 >nul'
+                // Use ping for a 3-second delay instead of timeout
+                bat 'ping -n 4 127.0.0.1 >nul'
             }
         }
     }
