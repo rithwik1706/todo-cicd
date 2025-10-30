@@ -4,16 +4,13 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies...'
-                bat 'npm install'
+                bat 'cd "%WORKSPACE%" && npm install'
             }
         }
 
-        stage('Run Express App') {
+        stage('Run Application') {
             steps {
-                echo 'Starting Express app...'
-                // Run in background
-                bat 'start /B node main.js'
+                bat 'cd "%WORKSPACE%" && node main.js'
             }
         }
     }
