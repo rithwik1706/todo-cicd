@@ -10,8 +10,24 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                bat 'cd "%WORKSPACE%" && node main.js'
+                // Kill any existing Node process (optional)
+                bat 'taskkill /F /IM node.exe || exit 0'
+
+                // Start app in background
+                bat 'cd "%WORKSPACE%" && start /B node main.js'
+
+                // Wait few seconds to ensure it starts
+                bat 'timeout /t 3 >nul'
             }
+        }
+    }
+
+    post {
+        success {
+            echo '✅ App started successfully on port 3000!'
+        }
+        failure {
+            echo '❌ Build failed — check console output.'
         }
     }
 }
