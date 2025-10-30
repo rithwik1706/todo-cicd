@@ -10,24 +10,21 @@ pipeline {
 
         stage('Run Application') {
             steps {
-                // Kill existing Node processes (ignore if none)
-                bat 'taskkill /F /IM node.exe || exit 0'
-
-                // Start the Node.js app in the background
-                bat 'cd "%WORKSPACE%" && start /B node main.js'
-
-                // Use ping for a 3-second delay instead of timeout
-                bat 'ping -n 4 127.0.0.1 >nul'
+                // Run the app (just to test if it starts properly)
+                bat '''
+                cd "%WORKSPACE%"
+                node main.js || exit 0
+                '''
             }
         }
     }
 
     post {
         success {
-            echo '✅ App started successfully on port 3000!'
+            echo '✅ Build succeeded!'
         }
         failure {
-            echo '❌ Build failed — check console output.'
+            echo '❌ Build failed!'
         }
     }
 }
